@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Experiential Learning Game</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+    #game {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: url('bg.png') no-repeat center center;
+      background-size: cover;
+    }
+    #educator {
+      position: absolute;
+      width: 85px;
+      top: 22%;
+      left: 17%;
+      transition: all 1s ease-in-out;
+      z-index: 10;
+    }
+    #dialogue {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 15px;
+      border-radius: 10px;
+      max-width: 400px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    }
+   .location {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  background-image: url('map.png'); /* Replace with your icon image */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none; /* Remove border if not needed */
+}
+    #checklist {
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      background: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
+    #checklist ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    #checklist li {
+      margin: 5px 0;
+    }
+    .completed {
+      text-decoration: line-through;
+      color: green;
+    }
+    #popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60%;
+	  height: 900px;
+      overflow-y: auto; 
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+      display: none;
+      z-index: 999;
+    }
+    #popup iframe {
+      width: 100%;
+      height: 800px;
+      margin-top: 10px;
+    }
+    #popup button {
+      margin-top: 10px;
+      float: right;
+      padding: 5px 10px;
+    }
+	#popup-close {
+	  position: absolute;
+	  top: 10px;
+	  right: 15px;
+	  font-size: 22px;
+	  font-weight: bold;
+	  color: #333;
+	  cursor: pointer;
+	  z-index: 1000;
+	}
+	#popup-close:hover {
+	  color: red;
+	}
+	
+#introPopup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#introContent {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+#introContent button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007b5e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#introContent button:hover {
+  background-color: #005f48;
+}
+
+  </style>
+</head>
+<body>
+  <div id="game">
+    <img id="educator" src="chr.png" alt="Educator" />
+    <div id="dialogue">Welcome! I'm your guide. Today, we will learn about experiential learning. Let’s begin our journey!</div>
+
+    <div id="checklist">
+      <strong>Learning Path</strong>
+      <ul>
+        <li id="step1">1. What is Experiential Learning?</li>
+        <li id="step2">2. Key Theorists and Models</li>
+        <li id="step3">3. Carver’s Pedagogical Principles</li>
+        <li id="step4">4. ABC Framework</li>
+        <li id="step5">5. Real-World Application</li>
+      </ul>
+    </div>
+
+    <!-- Popup -->
+	<div id="popup">
+	  <span id="popup-close" onclick="closePopup()">✖</span>
+	  <div id="popup-content"></div>
+	  <iframe id="popup-video" src="" allowfullscreen></iframe>
+	</div>
+
+
+    
+	<!-- Clickable learning areas -->
+    <div class="location" style="top: 65%; left: 15%;" onclick="goToStep(1)"></div> <!-- Library -->
+    <div class="location" style="top: 85%; left: 40%;" onclick="goToStep(2)"></div> <!-- Gym -->
+    <div class="location" style="top: 58%; left: 50%;" onclick="goToStep(3)"></div> <!-- Middle -->
+    <div class="location" style="top: 30%; left: 80%;" onclick="goToStep(4)"></div> <!-- School -->
+    <div class="location" style="top: 65%; left: 75%;" onclick="goToStep(5)"></div> <!-- Garden -->
+	
+  </div>
+  
+  <div id="introPopup">
+  <div id="introContent">
+    <h2>Welcome to the Experiential Learning Journey!</h2>
+    <p>In this game, you’ll explore some of the theory of <strong>Experiential Learning</strong>.</p>
+    <p>Scattered around the map are small scrolls . Click each one to learn something new.</p>
+    <p>Every time you click one, a step in your checklist will be marked off .</p>
+    <p>Finish all five to complete your learning path!</p>
+    <button onclick="startGame()">Start Game</button>
+  </div>
+</div>
+
+
+  <script>
+    const educator = document.getElementById('educator');
+    const dialogue = document.getElementById('dialogue');
+    const popup = document.getElementById('popup');
+    const popupContent = document.getElementById('popup-content');
+    const popupVideo = document.getElementById('popup-video');
+
+    const steps = [
+      {
+        text: "Now we will learn about What is Experiential Learning.",
+        top: '60%', left: '30%',
+        checklist: 'step1',
+        content: `
+          <h2>What is Experiential Learning?</h2>
+          <p>It is "education...that makes conscious application of the students' experiences by integrating them into the curriculum" (Carver, 1996, p. 150).</p>
+        `,
+        video: 'https://www.youtube.com/embed/GUWVplQycP8'  
+      },
+      {
+        text: "Now we will learn about Key Theorists and Models.",
+        top: '75%', left: '45%',
+        checklist: 'step2',
+        content: `
+          <h1>Key Theorists and Models</h1> </br>
+		  <h2>Kolb (1984) identifies three historical models in the development of experiential learning: </h2></br> <hr> 
+          <p><strong>Lewinian:</strong> Based on a concrete experience, observations/reflections, abstract concepts/generalizations, and the testing of new concepts (Kolb, 1984)</p>  <img src="Lewinian.png" alt="Lewinian Model" style="max-width: 100%; height: auto; margin-top: 10px;" /> </br><hr> 
+          <p><strong>Dewey:</strong> Dewey's work stands apart from the Lewinian model, in the sense that there is "postponement of immediate action" (Kolb, 1984, p 22), suggesting that time and reflection is needed between each step</p>  <img src="Dewey.png" alt="Dewey Model" style="max-width: 100%; height: auto; margin-top: 10px;" /></br><hr> 
+          <p><strong>Piaget:</strong> Piaget utilizes concepts of experiential learning in order to develop his model of cognitive development, which shows that children progressively become more involved in their learning process (Kolb, 1984)</p>  <img src="Piaget.png" alt="Piaget Model" style="max-width: 100%; height: auto; margin-top: 10px;" /></br><hr> 
+		   <h2> Explained for Beginners (In 3 Minutes)  </h2>       
+		`,
+        video: 'https://www.youtube.com/embed/l_Wb8H3Ip9s' 
+      },
+      {
+        text: "Now we will learn about Carver’s experiential learning..",
+        top: '50%', left: '50%',
+        checklist: 'step3',
+        content: `
+  <h2>Carver's Principles</h2>
+  <p>Carver presents a conceptual framework to help educators understand and design experiential education in a structured, interdisciplinary way. The goal is to unify diverse practices under common principles without oversimplifying their complexity.</p>
+  <p>Authenticity, Active Learning, Experience-driven, Future-oriented.</p>
+  <p>In defining the core of experiential education, Carver (1996) outlines four key pedagogical principles: <em>Authenticity</em> (learning that is purposeful and relevant), <em>Active Learning</em> (engaging students mentally and physically), <em>Experience-Driven</em> (centered on student experiences), and <em>Future-Oriented</em> (connecting current learning to future opportunities).</p>
+  <img src="Carver.png" alt="Carver Model" style="max-width: 100%; height: auto; margin-top: 10px;" />
+  <hr>
+`,
+        video: ''
+      },
+      {
+       text: "Now we will learn about the ABC Framework.",
+  top: '38%', left: '70%',
+  checklist: 'step4',
+  content: `
+    <h1>How can teachers allow for experiential learning?</h1>
+    <h2>Carver (1996) identifies the "ABC" of experiential learning. Fundamentally teachers need to:</h2>
+    <p>A. <strong>Agency</strong> – Let students decide what matters to them, and build their understanding.</p>
+    <p>B. <strong>Belonging</strong> – The classroom environment needs to allow students to be themselves.</p>
+    <p>C. <strong>Competence</strong> – Students need to develop competence "in a wide variety of areas (cognitive, physical, musical, social, etc.)."</p>
+    <img src="ABC.png" alt="ABC Model" style="max-width: 100%; height: auto; margin-top: 10px;" />
+    <p>(Carver, 1996)</p>
+  `,
+  video: ''
+}
+,
+      {
+        text: "Now we will learn about Real-World experiential/place-based learning Application. You've completed the journey! ",
+        top: '65%', left: '75%',
+        checklist: 'step5',
+        content: `<h1>Real-World Experiential Application</h1><h2>See how schools apply experiential curriculum every day.</h2>
+			<h3>Application 1 </h3>
+			<iframe width="100%" height="250" src="https://www.youtube.com/embed/MQi2UWzba3g" allowfullscreen></iframe>
+			<h3>Application 2 </h3>
+			<iframe width="100%" height="250" src="https://www.youtube.com/embed/7Hlx23fvxqs" allowfullscreen></iframe>
+			<h3>Application 3 </h3>
+			<iframe width="100%" height="250" src="https://www.youtube.com/embed/3ftrUFNCTqY" allowfullscreen></iframe>
+			<h3>Application 4 </h3>
+			<iframe width="100%" height="250" src="https://www.youtube.com/embed/_MDOB5-ocQc" allowfullscreen></iframe>
+			<h3>Application 5 </h3>
+		  `,
+        video: 'https://www.youtube.com/embed/TJYQtQkmDqs'
+      }
+    ];
+
+    function goToStep(index) {
+  const step = steps[index - 1];
+  educator.style.top = step.top;
+  educator.style.left = step.left;
+  dialogue.innerHTML = step.text;
+  document.getElementById(step.checklist).classList.add('completed');
+
+  setTimeout(() => {
+    popupContent.innerHTML = step.content;
+    popupVideo.src = step.video;
+    popup.style.display = 'block';
+  }, 900); 
+}
+
+
+    function closePopup() {
+      popup.style.display = 'none';
+      popupVideo.src = '';
+    }
+	function startGame() {
+  document.getElementById('introPopup').style.display = 'none';
+}
+
+  </script>
+</body>
+</html>

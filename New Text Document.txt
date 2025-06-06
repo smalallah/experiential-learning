@@ -1,0 +1,16 @@
+{
+        text: "Now we will learn about Key Theorists and Models.",
+        top: '75%', left: '45%',
+        checklist: 'step9',
+        content: `
+          <h2>Key Theorists and Models</h2>
+          <p><strong>Lewinian:</strong> Based on a concrete experience, observations/reflections, abstract concepts/generalizations, and the testing of new concepts (Kolb, 1984)</p>  <img src="Lewinian.png" alt="Lewinian Model" style="max-width: 100%; height: auto; margin-top: 10px;" />
+          <p><strong>Dewey:</strong> Dewey's work stands apart from the Lewinian model, in the sense that there is "postponement of immediate action" (Kolb, 1984, p 22), suggesting that time and reflection is needed between each step</p>  <img src="Dewey.png" alt="Dewey Model" style="max-width: 100%; height: auto; margin-top: 10px;" />
+          <p><strong>Piaget:</strong> Piaget utilizes concepts of experiential learning in order to develop his model of cognitive development, which shows that children progressively become more involved in their learning process (Kolb, 1984)</p>  <img src="Piaget.png" alt="Piaget Model" style="max-width: 100%; height: auto; margin-top: 10px;" />
+         <h3>Watch the videos:</h3>
+    <iframe width="100%" height="250" src="https://www.youtube.com/embed/TJYQtQkmDqs" allowfullscreen></iframe>
+    <iframe width="100%" height="250" src="https://www.edutopia.org/video/garden-based-learning-engaging-students-their-environment" allowfullscreen></iframe>
+    <iframe width="100%" height="250" src="https://www.youtube.com/embed/GUWVplQycP8" allowfullscreen></iframe>
+  `,
+        video: ''
+      },
